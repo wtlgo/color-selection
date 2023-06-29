@@ -1,29 +1,36 @@
 const cols = document.querySelectorAll(".col");
 
 document.addEventListener("keydown", (event) => {
-    if (event.code.toLowerCase() == "space") {
-        event.preventDefault();
-        setRandomColors();
-    }
+    if (event.code.toLowerCase() !== "space") return;
+
+    event.preventDefault();
+    setRandomColors();
 });
 
 document.addEventListener("click", (event) => {
     const type = event.target.dataset.type;
 
-    if (type == "lock") {
-        const node =
-            event.target.tagName.toLowerCase() == "i"
-                ? event.target
-                : event.target.children[0];
+    switch (type) {
+        case "lock": {
+            const node =
+                event.target.tagName.toLowerCase() == "i"
+                    ? event.target
+                    : event.target.children[0];
 
-        node.classList.toggle("fa-lock-open");
-        node.classList.toggle("fa-lock");
-    } else if (type == "copy") {
-        copyToClickboard(event.target.textContent);
+            node.classList.toggle("fa-lock-open");
+            node.classList.toggle("fa-lock");
+
+            break;
+        }
+
+        case "copy": {
+            copyToClipboard(event.target.textContent);
+            break;
+        }
     }
 });
 
-function copyToClickboard(text) {
+function copyToClipboard(text) {
     showSnackBar();
     return navigator.clipboard.writeText(text);
 }
